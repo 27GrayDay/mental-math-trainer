@@ -9,6 +9,7 @@ import { StatsBar, StatsCard } from './components/Stats';
 import { useHotkeys } from './hooks/useHotkeys';
 import { useSettings } from './hooks/useSettings';
 import { useTrainer } from './hooks/useTrainer';
+import { hasEnabledOps } from './domain';
 import type { Settings } from './types';
 
 const COLUMN = 680; // ширина центральной колонки на больших экранах
@@ -30,10 +31,10 @@ export default function App() {
   };
 
   const board = <QuestionBoard engine={engine} mobile={mobile} keyboardVisible={settings.keyboard} />;
-  const keypad = settings.keyboard && <Keypad disabled={!engine.isActive} onPress={(k) => engine.press(k)} />;
+  const keypad = settings.keyboard && <Keypad disabled={!engine.canType} onPress={(k) => engine.press(k)} />;
   const lower = (
     <Stack spacing={2} sx={{ maxWidth: COLUMN, mx: 'auto', p: { xs: 1.5, md: 0 }, pt: { md: 4 } }}>
-      <SettingsPanel settings={settings} onChange={change} onStart={start} />
+      <SettingsPanel settings={settings} canStart={hasEnabledOps(settings)} onChange={change} onStart={start} />
       <Instructions />
     </Stack>
   );

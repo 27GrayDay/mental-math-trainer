@@ -1,6 +1,6 @@
 /** Математические действия; у каждого своё меню вариантов в настройках. */
 export type OpId = 'add' | 'sub' | 'mul' | 'div' | 'pow' | 'root';
-export type Phase = 'idle' | 'running' | 'correction' | 'finished';
+export type Phase = 'idle' | 'running' | 'correction' | 'paused' | 'finished';
 
 export interface Settings {
   /** Выбранные пункты меню каждой операции. Операция включена, если выбран хотя бы один пункт. */

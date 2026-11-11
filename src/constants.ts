@@ -38,7 +38,7 @@ export const QUESTION_TIME_OPTIONS = [
   { value: 30, label: '30 секунд' }, { value: 60, label: '60 секунд' }, { value: 0, label: 'Без ограничения' },
 ];
 export const DEFAULT_SETTINGS: Settings = {
-  options: { add: ['max:10'], sub: ['max:10'], mul: [], div: [], pow: [], root: [] },
+  options: { add: [], sub: [], mul: [], div: [], pow: [], root: [] }, // по умолчанию ничего не выбрано
   negatives: false, count: 2, durationMin: 3, questionSec: 30, sound: true,
   keyboard: typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches,
 };
@@ -48,4 +48,5 @@ export const COLORS = {
   first: 'var(--blue)', second: 'var(--orange)', third: 'var(--teal)', operator: 'var(--label)',
   primary: 'var(--blue)', success: 'var(--green)', danger: 'var(--red)', warning: 'var(--orange)',
 };
-export const TRAINER = { streakStep: 5, maxMultiplier: 5, historyVisible: 5 };
+/** retryMin/retryMax — через сколько примеров вернётся пример, в котором была ошибка. */
+export const TRAINER = { streakStep: 5, maxMultiplier: 10, historyVisible: 5, retryMin: 3, retryMax: 5 };

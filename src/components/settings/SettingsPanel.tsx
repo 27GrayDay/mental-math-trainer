@@ -11,12 +11,12 @@ import { OperationsPicker } from './OperationsPicker';
 import { OptionMenu } from './OptionMenu';
 import { SelectRow } from './SelectRow';
 
-interface Props { settings: Settings; onChange: (patch: Partial<Settings>) => void; onStart: () => void }
+interface Props { settings: Settings; canStart: boolean; onChange: (patch: Partial<Settings>) => void; onStart: () => void }
 
 const toggleFullscreen = () =>
   document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
 
-export function SettingsPanel({ settings, onChange, onStart }: Props) {
+export function SettingsPanel({ settings, canStart, onChange, onStart }: Props) {
   const [viewed, setViewed] = useState<OpId>('add');
   const operation = OPERATIONS.find((o) => o.id === viewed)!;
   const enabled = Object.fromEntries(OPERATIONS.map((o) => [o.id, settings.options[o.id].length > 0])) as Record<OpId, boolean>;
@@ -25,14 +25,14 @@ export function SettingsPanel({ settings, onChange, onStart }: Props) {
     const current = settings.options[viewed];
     const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
     const options = { ...settings.options, [viewed]: next };
-    if (OPERATIONS.some((o) => options[o.id].length)) onChange({ options }); // хотя бы одно действие должно остаться
+    onChange({ options });
   };
 
   return (
     <Stack spacing={3}>
       <Typography component="h1" sx={{ fontSize: 34, fontWeight: 700, letterSpacing: '-0.02em', px: 2 }}>Настройки</Typography>
 
-      <Section title="Действия" footer="Синим отмечены включённые действия: чтобы включить, выберите хотя бы один пункт в его меню.">
+      <Section title="Действия" footer={canStart ? 'Синим отмечены включённые действия: чтобы включить, выберите хотя бы один пункт в его меню.' : 'Выберите хотя бы один пункт в меню действия, чтобы начать тренировку.'}>
         <Card sx={{ p: 0, overflow: 'hidden' }}>
           <Box sx={{ p: 1.5 }}><OperationsPicker viewed={viewed} enabled={enabled} onView={setViewed} /></Box>
           <Box sx={{ borderTop: '0.5px solid var(--separator)' }}>
@@ -70,7 +70,8 @@ export function SettingsPanel({ settings, onChange, onStart }: Props) {
         </ListGroup>
       </Section>
 
-      <Button variant="contained" fullWidth onClick={onStart} sx={{ height: 52, borderRadius: '26px', fontSize: 17, bgcolor: 'var(--blue)' }}>
+      <Button variant="contained" fullWidth disabled={!canStart} onClick={onStart}
+        sx={{ height: 52, borderRadius: '26px', fontSize: 17, bgcolor: 'var(--blue)', '&.Mui-disabled': { bgcolor: 'var(--fill)', color: 'var(--secondary)' } }}>
         Начать тренировку
       </Button>
     </Stack>
