@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'sounds/*'],
+      includeAssets: ['favicon.svg', 'sounds/*', 'figures/*'],
       manifest: {
         name: 'Тренажёр устного счёта',
         short_name: 'Устный счёт',
